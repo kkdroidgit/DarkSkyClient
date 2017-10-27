@@ -4,6 +4,7 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
+import paperwrrk.www.darkskyclient.events.ErrorEvent;
 import paperwrrk.www.darkskyclient.events.WeatherEvent;
 import paperwrrk.www.darkskyclient.model.Currently;
 import paperwrrk.www.darkskyclient.model.Weather;
@@ -50,6 +51,7 @@ public class WeatherServiceProvider {
             @Override
             public void onFailure(Call<Weather> call, Throwable t) {
                 Log.e(TAG,"Unable to fetch weather data " );
+                EventBus.getDefault().post(new ErrorEvent("Unable to fetch weather data"));
             }
         });
     }
