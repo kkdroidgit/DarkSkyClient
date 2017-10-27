@@ -2,6 +2,9 @@ package paperwrrk.www.darkskyclient;
 
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
+
+import paperwrrk.www.darkskyclient.events.WeatherEvent;
 import paperwrrk.www.darkskyclient.model.Currently;
 import paperwrrk.www.darkskyclient.model.Weather;
 import paperwrrk.www.darkskyclient.services.WeatherService;
@@ -37,8 +40,11 @@ public class WeatherServiceProvider {
         weatherData.enqueue(new Callback<Weather>() {
             @Override
             public void onResponse(Call<Weather> call, Response<Weather> response) {
-                Currently currently = response.body().getCurrently();
+                Weather weather = response.body();
+                Currently currently = weather.getCurrently();
                 Log.e(TAG,"Temperature : " + currently.getTemperature());
+                //Create an Event when we get the data
+                EventBus.getDefault().post(new WeatherEvent(weather));
             }
 
             @Override
