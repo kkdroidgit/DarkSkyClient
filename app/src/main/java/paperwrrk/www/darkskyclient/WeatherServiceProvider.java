@@ -42,10 +42,15 @@ public class WeatherServiceProvider {
             @Override
             public void onResponse(Call<Weather> call, Response<Weather> response) {
                 Weather weather = response.body();
-                Currently currently = weather.getCurrently();
-                Log.e(TAG,"Temperature : " + currently.getTemperature());
-                //Create an Event when we get the data
-                EventBus.getDefault().post(new WeatherEvent(weather));
+                if(weather != null){
+                    Currently currently = weather.getCurrently();
+                    Log.e(TAG,"Temperature : " + currently.getTemperature());
+                    //Create an Event when we get the data
+                    EventBus.getDefault().post(new WeatherEvent(weather));
+                }
+                else {
+                    EventBus.getDefault().post(new ErrorEvent("No weather data available"));
+                }
             }
 
             @Override
