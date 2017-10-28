@@ -2,6 +2,7 @@ package paperwrrk.www.darkskyclient;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,21 +15,26 @@ import butterknife.ButterKnife;
 import paperwrrk.www.darkskyclient.events.ErrorEvent;
 import paperwrrk.www.darkskyclient.events.WeatherEvent;
 import paperwrrk.www.darkskyclient.model.Currently;
+import paperwrrk.www.darkskyclient.services.WeatherServiceProvider;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-
     @BindView(R.id.temperature)
     private TextView temperature;
+
+    //00f58afa01cc6c972d043f938e065b90
+
+    @BindView(R.id.icon_img)
+    private ImageView icon;
+
+    @BindView(R.id.summary_view)
+    private TextView summary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        requestCurrentWeather(37.8267,-122.4233);
-
+        requestCurrentWeather(34.8267,-122.4233);
         ButterKnife.bind(this);
     }
 
@@ -37,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         /* Listen to the weather data in Main Activity*/
         Currently currently = weatherEvent.getWeather().getCurrently();
         temperature.setText(String.valueOf(Math.round(currently.getTemperature())));
+        summary.setText(currently.getSummary());
+        //icon.setImageResource(WeatherIconUtil.ICONS.get(currently.getIcon()));
     };
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -59,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        super.onStop();
         EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 }

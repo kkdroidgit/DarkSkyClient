@@ -5,12 +5,12 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
+
 /**
- * Created by Kartik on 27-10-17.
+ * Created by Zakaria Chowdhury on 8/19/17.
  */
 
 public interface WeatherService {
-    @GET("{latitude},{longitude}")
-    Call<Weather> getWeather(@Path("latitude") double latitude,@Path("longitude") double longitude);
-
+    @GET("{lat},{lng}")
+    Call<Weather> getWeather(@Path("lat") double lat, @Path("lng") double lng);
 }
